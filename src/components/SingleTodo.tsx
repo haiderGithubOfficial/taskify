@@ -21,15 +21,11 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
   }, [edit]);
 
   const handleDone = (id: number) => {
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, isDone: !todo.isDone };
-      } else {
-        return { ...todo };
-      }
-    });
-
-    setTodos(newTodos);
+    setTodos(
+      todos.map((todo) =>
+        todo.id === id ? { ...todo, isDone: !todo.isDone } : todo
+      )
+    );
   };
 
   const handleDelete = (id: number) => {
@@ -38,14 +34,9 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
 
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        return { ...todo, todo: editTodo };
-      } else {
-        return { ...todo };
-      }
-    });
-    setTodos(newTodos);
+    setTodos(
+      todos.map((todo) => (todo.id === id ? { ...todo, todo: editTodo } : todo))
+    );
     setEdit(false);
   };
 
@@ -64,6 +55,7 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
       ) : (
         <span className="todos__single--text">{todo.todo}</span>
       )}
+
       <div>
         {todo.isDone ? (
           ""
@@ -72,6 +64,7 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
             <AiFillEdit onClick={() => setEdit(!edit)} />
           </span>
         )}
+
         <span className="icon">
           <AiFillDelete onClick={() => handleDelete(todo.id)} />
         </span>
