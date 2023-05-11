@@ -21,15 +21,15 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
   }, [edit]);
 
   const handleDone = (id: number) => {
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, isDone: !todo.isDone };
-        } else {
-          return { ...todo };
-        }
-      })
-    );
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, isDone: !todo.isDone };
+      } else {
+        return { ...todo };
+      }
+    });
+
+    setTodos(newTodos);
   };
 
   const handleDelete = (id: number) => {
@@ -38,15 +38,14 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
 
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
-    setTodos(
-      todos.map((todo) => {
-        if (todo.id === id) {
-          return { ...todo, todo: editTodo };
-        } else {
-          return { ...todo };
-        }
-      })
-    );
+    const newTodos = todos.map((todo) => {
+      if (todo.id === id) {
+        return { ...todo, todo: editTodo };
+      } else {
+        return { ...todo };
+      }
+    });
+    setTodos(newTodos);
     setEdit(false);
   };
 
