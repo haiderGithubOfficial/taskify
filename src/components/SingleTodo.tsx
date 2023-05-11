@@ -22,9 +22,9 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
 
   const handleDone = (id: number) => {
     setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, isDone: !todo.isDone } : { ...todo }
-      )
+      todos.map((todo) => {
+        return todo.id === id ? { ...todo, isDone: !todo.isDone } : { ...todo };
+      })
     );
   };
 
@@ -35,9 +35,9 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
   const handleEdit = (e: React.FormEvent, id: number) => {
     e.preventDefault();
     setTodos(
-      todos.map((todo) =>
-        todo.id === id ? { ...todo, todo: editTodo } : { ...todo }
-      )
+      todos.map((todo) => {
+        return todo.id === id ? { ...todo, todo: editTodo } : { ...todo };
+      })
     );
     setEdit(false);
   };
