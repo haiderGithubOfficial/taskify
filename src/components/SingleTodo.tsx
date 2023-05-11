@@ -23,7 +23,11 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
   const handleDone = (id: number) => {
     setTodos(
       todos.map((todo) => {
-        return todo.id === id ? { ...todo, isDone: !todo.isDone } : { ...todo };
+        if (todo.id === id) {
+          return { ...todo, isDone: !todo.isDone };
+        } else {
+          return { ...todo };
+        }
       })
     );
   };
@@ -36,7 +40,11 @@ const SingleTodo: React.FC<Props> = ({ todo, todos, setTodos }) => {
     e.preventDefault();
     setTodos(
       todos.map((todo) => {
-        return todo.id === id ? { ...todo, todo: editTodo } : { ...todo };
+        if (todo.id === id) {
+          return { ...todo, todo: editTodo };
+        } else {
+          return { ...todo };
+        }
       })
     );
     setEdit(false);
