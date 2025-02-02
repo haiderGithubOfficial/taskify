@@ -3,18 +3,22 @@ import { Todo } from "../model";
 import SingleTodo from "./SingleTodo";
 
 import "./styles.css";
+import { AiFillEdit } from "react-icons/ai";
 
 type Props = {
   todos: Todo[];
   setTodos: React.Dispatch<React.SetStateAction<Todo[]>>;
 };
 
-// Helper function to format numbers with commas
 const formatNumberWithCommas = (num: number) => {
   return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 };
 
 const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
+  const [budget, setBudget] = useState<number>(180000);
+  const [isEditing, setIsEditing] = useState<boolean>(false); // State for editing mode
+  const [newBudget, setNewBudget] = useState<number>(budget); // State for new budget input
+
   const totalPending = todos.reduce((acc, todo) => {
     if (!todo.isDone) {
       return acc + Number(todo.todo.split(" ")?.[0]);
@@ -29,21 +33,28 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
     return acc;
   }, 0);
 
-  const totalBudget = 180000;
   const totalCombined = totalPending + totalCompleted;
-  const remainingBudget = (() =>{
-    if(totalBudget > totalCombined){
-      return totalBudget - totalCombined;
+  const remainingBudget = (() => {
+    if (budget > totalCombined) {
+      return budget - totalCombined;
     }
     return 0;
   })();
   const loan = (() => {
-    if (totalBudget < totalCombined) {
-      return totalCombined - totalBudget;
+    if (budget < totalCombined) {
+      return totalCombined - budget;
     } else {
       return 0;
     }
   })();
+
+  const handleEditClick = () => {
+    if (isEditing) {
+      // Update budget and switch to display mode
+      setBudget(newBudget);
+    }
+    setIsEditing(!isEditing); // Toggle edit mode
+  };
 
   return (
     <div className="container">
@@ -60,9 +71,11 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
               />
             );
         })}
-
-        <h2 className="todos__heading">Total: {formatNumberWithCommas(totalPending)}</h2>
+        <h2 className="todos__heading">
+          Total: {formatNumberWithCommas(totalPending)}
+        </h2>
       </div>
+
       <div className="todos remove">
         <span className="todos__heading">Completed Expense</span>
         {todos.map((todo) => {
@@ -76,17 +89,47 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
               />
             );
         })}
-        <h2 className="todos__heading">Total: {formatNumberWithCommas(totalCompleted)}</h2>
+        <h2 className="todos__heading">
+          Total: {formatNumberWithCommas(totalCompleted)}
+        </h2>
       </div>
+
       <div className="todos combine">
-        <h2 className="todos__heading">Expense Total: {formatNumberWithCommas(totalCombined)}</h2>
+        <h2 className="todos__heading">
+          Expense Total: {formatNumberWithCommas(totalCombined)}
+        </h2>
       </div>
+
       <div className="todos combine">
-        <h2 className="todos__heading">Total Budget: {formatNumberWithCommas(totalBudget)}</h2>
+        {isEditing ? (
+          <div className="todo-container">
+            <input
+              className="todos__single--text"
+              type="number"
+              value={newBudget}
+              onChange={(e) => setNewBudget(Number(e.target.value))}
+              onBlur={handleEditClick} // Update when the input loses focus
+            />
+            <button className="elegant-button" onClick={handleEditClick}>
+              Update
+            </button>
+          </div>
+        ) : (
+      
+            <h2 className="todos__heading">
+              Total Budget: {formatNumberWithCommas(budget)}{" "}
+              <AiFillEdit style={{background: "yellow", padding: "4px", borderRadius: "5px"}} onClick={handleEditClick} className="icon" />
+            </h2>
+     
+        )}
       </div>
+
       <div className="todos combine">
-        <h2 className="todos__heading">Budget Remaining: {formatNumberWithCommas(remainingBudget)}</h2>
+        <h2 className="todos__heading">
+          Budget Remaining: {formatNumberWithCommas(remainingBudget)}
+        </h2>
       </div>
+
       <div className="todos combine">
         <h2 className="todos__heading">Loan: {formatNumberWithCommas(loan)}</h2>
       </div>
