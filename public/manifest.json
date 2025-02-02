@@ -1,6 +1,8 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "Expensify",
+  "name": "Expensify",
+  "description": "An app to manage expense.",
+  "lang": "en",
   "icons": [
     {
       "src": "favicon.ico",
