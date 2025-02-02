@@ -31,7 +31,19 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
 
   const totalBudget = 180000;
   const totalCombined = totalPending + totalCompleted;
-  const remainingBudget = totalBudget - totalCombined;
+  const remainingBudget = (() =>{
+    if(totalBudget > totalCombined){
+      return totalBudget - totalCombined;
+    }
+    return 0;
+  })();
+  const loan = (() => {
+    if (totalBudget < totalCombined) {
+      return totalCombined - totalBudget;
+    } else {
+      return 0;
+    }
+  })();
 
   return (
     <div className="container">
@@ -73,7 +85,10 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
         <h2 className="todos__heading">Total Budget: {formatNumberWithCommas(totalBudget)}</h2>
       </div>
       <div className="todos combine">
-        <h2 className="todos__heading">Remaining: {formatNumberWithCommas(remainingBudget)}</h2>
+        <h2 className="todos__heading">Budget Remaining: {formatNumberWithCommas(remainingBudget)}</h2>
+      </div>
+      <div className="todos combine">
+        <h2 className="todos__heading">Loan: {formatNumberWithCommas(loan)}</h2>
       </div>
     </div>
   );
