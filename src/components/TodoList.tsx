@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Todo } from "../model";
 import SingleTodo from "./SingleTodo";
 
@@ -18,7 +18,8 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
   const [budget, setBudget] = useState<number>(180000);
   const [isEditing, setIsEditing] = useState<boolean>(false); // State for editing mode
   const [newBudget, setNewBudget] = useState<number>(budget); // State for new budget input
-
+  const [totalMoney, setTotalMoney] = useState<number>(2649887);
+  const [isEditingTotalMoney, setIsEditingTotalMoney] = useState<boolean>(false); // State for editing mode
   const totalPending = todos.reduce((acc, todo) => {
     if (!todo.isDone) {
       return acc + Number(todo.todo.split(" ")?.[0]);
@@ -55,6 +56,20 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
     }
     setIsEditing(!isEditing); // Toggle edit mode
   };
+
+  const handleTotalMoneyEditClick = () => {
+    if (isEditingTotalMoney) {
+      // Update budget and switch to display mode
+      setTotalMoney(totalMoney);
+    }
+    setIsEditingTotalMoney(!isEditingTotalMoney); // Toggle edit mode
+  }
+useEffect(() => {
+  if(loan > 0) {
+    setTotalMoney(totalMoney - loan);
+  }
+}, [loan]);
+ 
 
   return (
     <div className="container">
@@ -133,6 +148,31 @@ const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
       <div className="todos combine">
         <h2 className="todos__heading">Loan: {formatNumberWithCommas(loan)}</h2>
       </div>
+
+      <div className="todos combine">
+        {isEditingTotalMoney ? (
+          <div className="todo-container">
+            <input
+              className="todos__single--text"
+              type="number"
+              value={totalMoney}
+              onChange={(e) => setTotalMoney(Number(e.target.value))}
+              onBlur={handleTotalMoneyEditClick} // Update when the input loses focus
+            />
+            <button className="elegant-button" onClick={handleEditClick}>
+              Update
+            </button>
+          </div>
+        ) : (
+      
+            <h2 className="todos__heading">
+              Total Money: {formatNumberWithCommas(totalMoney)}{" "}
+              <AiFillEdit style={{background: "yellow", padding: "4px", borderRadius: "5px"}} onClick={handleTotalMoneyEditClick} className="icon" />
+            </h2>
+     
+        )}
+      </div>
+
     </div>
   );
 };
