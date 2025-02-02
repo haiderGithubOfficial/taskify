@@ -1,13 +1,14 @@
 @import url("https://fonts.googleapis.com/css2?family=Neucha&display=swap");
 
 .App {
-  width: 100vw;
+  width: auto;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
   background-color: #2f74c0;
   font-family: "Neucha", cursive;
+  padding: 5px;
 }
 
 .heading {
@@ -19,6 +20,9 @@
   text-align: center;
 }
 
+h2{
+  margin-top: 15px;
+}
 @media (max-width: 800px) {
   .heading {
     margin: 15px 0;
