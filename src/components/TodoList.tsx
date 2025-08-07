@@ -15,7 +15,7 @@ const formatNumberWithCommas = (num: number) => {
 };
 
 const TodoList: React.FC<Props> = ({ todos, setTodos }) => {
-  const [budget, setBudget] = useState<number>(180000);
+  const [budget, setBudget] = useState<number>(240000);
   const [isEditing, setIsEditing] = useState<boolean>(false); // State for editing mode
   const [newBudget, setNewBudget] = useState<number>(budget); // State for new budget input
   const [totalMoney, setTotalMoney] = useState<number>(2649887);
